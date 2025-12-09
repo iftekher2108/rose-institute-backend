@@ -1,0 +1,1037 @@
+generator client {
+  provider = "prisma-client"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model academicyear {
+  Id             Int
+  Year           String?   @db.VarChar(20)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdateDateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  State          Int?      @default(1)
+
+  @@ignore
+}
+
+model assignments {
+  id                Int      @id @default(autoincrement())
+  classId           String   @db.Text
+  subjectId         Int
+  teacherId         Int
+  AssignTitle       String   @db.VarChar(250)
+  AssignDescription String   @db.Text
+  AssignFile        String   @db.VarChar(250)
+  AssignDeadLine    String   @db.VarChar(250)
+  EntryBy           Int
+  EntryDateTime     DateTime @db.DateTime(0)
+  UpdateBy          Int
+  UpdatedateTime    DateTime @db.DateTime(0)
+  DeleteBy          Int
+  DeleteDateTime    DateTime @db.DateTime(0)
+  State             Int      @default(1)
+}
+
+model attendance {
+  Id             Int       @id @default(autoincrement())
+  ClassId        Int?
+  SectionId      Int?
+  ShiftId        Int?
+  StudentId      Int?
+  Status         Int?
+  AcademicYear   Int?      @db.Year
+  Date           DateTime? @db.Date
+  MobileNo       String?   @db.VarChar(30)
+  SmsContent     String?   @db.VarChar(640)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdatedateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model booklibrary {
+  id              Int      @id @default(autoincrement())
+  bookName        String   @db.VarChar(250)
+  bookDescription String   @db.Text
+  bookAuthor      String   @db.VarChar(250)
+  bookType        String   @db.VarChar(20)
+  bookPrice       String?  @db.VarChar(250)
+  bookFile        String?  @db.VarChar(250)
+  bookState       Int?
+  EntryBy         Int
+  EntryDateTime   DateTime @db.DateTime(0)
+  UpdateBy        Int
+  UpdatedateTime  DateTime @db.DateTime(0)
+  DeleteBy        Int
+  DeleteDateTime  DateTime @db.DateTime(0)
+  State           Int      @default(1)
+}
+
+model classactivities {
+  Id             Int       @id @default(autoincrement())
+  LectureTitle   String?   @db.VarChar(100)
+  File           String?   @db.VarChar(100)
+  ClassId        Int?
+  SectionId      Int?
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.Date
+  UpdateBy       Int?
+  UpdateDateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model classes {
+  Id             Int       @id @default(autoincrement())
+  className      String?   @db.VarChar(250)
+  classTeacher   String?   @db.Text
+  dormitoryId    Int?
+  Section        Int?
+  Shift          Int?
+  Groups         Int?
+  Tutionfee      String?   @db.VarChar(50)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdatedateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+
+  @@unique([className, Section, Shift, Groups], map: "className")
+}
+
+model classschedule {
+  id             Int      @id @default(autoincrement())
+  classId        Int
+  subjectId      Int
+  dayOfWeek      String   @db.VarChar(10)
+  startTime      String   @db.VarChar(20)
+  endTime        String   @db.VarChar(20)
+  EntryBy        Int
+  EntryDateTime  DateTime @db.DateTime(0)
+  UpdateBy       Int
+  UpdatedateTime DateTime @db.DateTime(0)
+  DeleteBy       Int
+  DeleteDateTime DateTime @db.DateTime(0)
+  State          Int      @default(1)
+}
+
+model department {
+  Id             Int       @id @default(autoincrement())
+  Department     String?   @unique(map: "Department") @db.VarChar(150)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdateDateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model designation {
+  Id             Int      @id @default(autoincrement())
+  Designation    String   @db.VarChar(150)
+  Notes          String   @db.Text
+  EntryBy        Int
+  EntryDateTime  DateTime @db.DateTime(0)
+  DeleteBy       Int
+  DeleteDateTime DateTime @db.DateTime(0)
+  UpdateBy       Int
+  UpdateDateTime DateTime @db.DateTime(0)
+  State          Int      @default(1)
+}
+
+model district {
+  Id             Int       @id @default(autoincrement())
+  DivisionName   Int?
+  DistrictName   String?   @db.VarChar(250)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntrydateTime  DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeletedateTime DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdatedateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model division {
+  Id             Int       @id @default(autoincrement())
+  DivisionName   String?   @db.VarChar(200)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntrydateTime  DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdatedateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeletedateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model dormitories {
+  id             Int      @id @default(autoincrement())
+  dormitory      String   @db.VarChar(250)
+  dormDesc       String?  @db.Text
+  EntryBy        Int
+  EntryDateTime  DateTime @db.DateTime(0)
+  UpdateBy       Int
+  UpdatedateTime DateTime @db.DateTime(0)
+  DeleteBy       Int
+  DeleteDateTime DateTime @db.DateTime(0)
+  State          Int      @default(1)
+
+  @@index([id], map: "id")
+}
+
+model employetype {
+  Id             Int       @id @default(autoincrement())
+  EmployeType    String?   @db.VarChar(150)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdateDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model events {
+  id               Int      @id @default(autoincrement())
+  eventTitle       String   @db.VarChar(250)
+  eventDescription String?  @db.Text
+  eventFor         String?  @db.VarChar(10)
+  enentPlace       String?  @db.VarChar(250)
+  eventDate        String   @db.VarChar(250)
+  EntryBy          Int
+  EntryDateTime    DateTime @db.DateTime(0)
+  UpdateBy         Int
+  UpdatedateTime   DateTime @db.DateTime(0)
+  DeleteBy         Int
+  DeleteDateTime   DateTime @db.DateTime(0)
+  State            Int      @default(1)
+}
+
+model exammarks {
+  Id               Int      @id @default(autoincrement())
+  ExamId           Int
+  ClassId          Int
+  SubjectId        Int
+  StudentId        Int
+  SectionId        Int?
+  ExamMark         Float
+  Examyear         String?  @db.VarChar(10)
+  PassMark         Int?
+  AttendanceMark   String   @db.VarChar(250)
+  Oral             Float?
+  Ct1              String?  @db.VarChar(5)
+  Ct2              Float?
+  Mid1             Float?
+  Mid2             Float?
+  Written          Float?
+  Practical        Float?
+  TotalMarks       Float?
+  AssesmentSubject Int?     @default(0) @db.TinyInt
+  FourSubject      Int?     @default(0) @db.TinyInt
+  HighestMarks     Int?
+  markComments     String   @db.Text
+  EntryBy          Int
+  EntryDateTime    DateTime @db.DateTime(0)
+  UpdateBy         Int
+  UpdatedateTime   DateTime @db.DateTime(0)
+  DeleteBy         Int
+  DeleteDateTime   DateTime @db.DateTime(0)
+  State            Int      @default(1)
+
+  @@unique([ExamId, ClassId, SubjectId, StudentId, SectionId, Examyear], map: "NewIndex1")
+}
+
+model examslist {
+  Id                Int       @id @default(autoincrement())
+  ExamTitle         String    @db.VarChar(250)
+  ExamDescription   String?   @db.Text
+  ExamDate          DateTime? @db.DateTime(0)
+  ExamYear          String    @db.VarChar(10)
+  PublishResult     Int       @db.TinyInt
+  PublishedBy       Int
+  PublishedDateTime DateTime  @db.DateTime(0)
+  UnpublishBy       Int?
+  unpublishDateTime DateTime? @db.DateTime(0)
+  EntryBy           Int?
+  EntryDateTime     DateTime? @db.DateTime(0)
+  UpdateBy          Int?
+  UpdatedateTime    DateTime? @db.DateTime(0)
+  DeleteBy          Int?
+  DeleteDateTime    DateTime? @db.DateTime(0)
+  State             Int?      @default(1)
+}
+
+model gradelevels {
+  id               Int      @id @default(autoincrement())
+  gradeName        String   @db.VarChar(250)
+  gradeDescription String?  @db.Text
+  gradePoints      String   @db.VarChar(250)
+  gradeFrom        String   @db.VarChar(250)
+  gradeTo          String   @db.VarChar(250)
+  EntryBy          Int
+  EntryDateTime    DateTime @db.DateTime(0)
+  UpdateBy         Int
+  UpdatedateTime   DateTime @db.DateTime(0)
+  DeleteBy         Int
+  DeleteDateTime   DateTime @db.DateTime(0)
+  State            Int      @default(1)
+}
+
+model groups {
+  Id             Int       @id @default(autoincrement())
+  Groups         String?   @unique(map: "Groups") @db.VarChar(100)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdatedateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model languages {
+  id              Int      @id @default(autoincrement())
+  languageTitle   String   @db.VarChar(250)
+  isRTL           Int
+  languagePhrases String   @db.Text
+  EntryBy         Int
+  EntryDateTime   DateTime @db.DateTime(0)
+  UpdateBy        Int
+  UpdatedateTime  DateTime @db.DateTime(0)
+  DeleteBy        Int
+  DeleteDateTime  DateTime @db.DateTime(0)
+  State           Int      @default(1)
+}
+
+model mailsms {
+  id             Int      @id @default(autoincrement())
+  mailTo         String   @db.VarChar(250)
+  mailType       String   @db.VarChar(250)
+  messageData    String   @db.Text
+  messageDate    String   @db.VarChar(250)
+  messageSender  String   @db.VarChar(250)
+  EntryBy        Int
+  EntryDateTime  DateTime @db.DateTime(0)
+  UpdateBy       Int
+  UpdatedateTime DateTime @db.DateTime(0)
+  DeleteBy       Int
+  DeleteDateTime DateTime @db.DateTime(0)
+  State          Int      @default(1)
+}
+
+model mailsmstemplates {
+  id             Int      @id @default(autoincrement())
+  templateTitle  String   @db.VarChar(250)
+  templateMail   String   @db.Text
+  templateSMS    String   @db.Text
+  templateVars   String   @db.Text
+  EntryBy        Int
+  EntryDateTime  DateTime @db.DateTime(0)
+  UpdateBy       Int
+  UpdatedateTime DateTime @db.DateTime(0)
+  DeleteBy       Int
+  DeleteDateTime DateTime @db.DateTime(0)
+  State          Int      @default(1)
+}
+
+model mediaalbums {
+  id               Int      @id @default(autoincrement())
+  albumTitle       String   @db.VarChar(250)
+  albumDescription String   @db.Text
+  albumImage       String   @db.VarChar(250)
+  albumParent      Int      @default(0)
+  EntryBy          Int
+  EntryDateTime    DateTime @db.DateTime(0)
+  UpdateBy         Int
+  UpdatedateTime   DateTime @db.DateTime(0)
+  DeleteBy         Int
+  DeleteDateTime   DateTime @db.DateTime(0)
+  State            Int      @default(1)
+}
+
+model mediaitems {
+  id               Int      @id @default(autoincrement())
+  albumId          Int      @default(0)
+  mediaURL         String   @db.VarChar(250)
+  mediaTitle       String   @db.VarChar(250)
+  mediaDescription String   @db.Text
+  mediaDate        Int
+  EntryBy          Int
+  EntryDateTime    DateTime @db.DateTime(0)
+  UpdateBy         Int
+  UpdatedateTime   DateTime @db.DateTime(0)
+  DeleteBy         Int
+  DeleteDateTime   DateTime @db.DateTime(0)
+  State            Int      @default(1)
+}
+
+model messages {
+  id             Int       @id @default(autoincrement())
+  messageId      Int?
+  userId         Int?
+  fromId         Int?
+  toId           Int?
+  messageText    String?   @db.Text
+  dateSent       String?   @db.VarChar(250)
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdatedateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model messageslist {
+  id              Int       @id @default(autoincrement())
+  userId          Int?
+  toId            Int?
+  lastMessage     String?   @db.VarChar(250)
+  lastMessageDate String?   @db.VarChar(250)
+  messageStatus   Int?
+  EntryBy         Int?
+  EntryDateTime   DateTime? @db.DateTime(0)
+  UpdateBy        Int?
+  UpdatedateTime  DateTime? @db.DateTime(0)
+  DeleteBy        Int?
+  DeleteDateTime  DateTime? @db.DateTime(0)
+  State           Int       @default(1)
+}
+
+model newsboard {
+  id             Int       @id @default(autoincrement())
+  newsTitle      String?   @db.VarChar(250)
+  newsText       String?   @db.Text
+  newsFor        String?   @db.VarChar(250)
+  newsDate       Int?
+  creationDate   Int?
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdatedateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model noticeboard {
+  Id             Int       @id @default(autoincrement())
+  Title          String?   @db.VarChar(100)
+  Body           String?   @db.Text
+  File           String?   @db.VarChar(100)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.Date
+  UpdateBy       Int?
+  UpdateDateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model onlineexams {
+  id              Int       @id @default(autoincrement())
+  examTitle       String?   @db.VarChar(250)
+  examDescription String?   @db.Text
+  examClass       String?   @db.VarChar(250)
+  examTeacher     Int?
+  examSubject     Int?
+  examDate        String?   @db.VarChar(250)
+  ExamEndDate     String?   @db.VarChar(250)
+  ExamShowGrade   Int?      @default(0)
+  examQuestion    String?   @db.Text
+  EntryBy         Int?
+  EntryDateTime   DateTime? @db.DateTime(0)
+  UpdateBy        Int?
+  UpdatedateTime  DateTime? @db.DateTime(0)
+  DeleteBy        Int?
+  DeleteDateTime  DateTime? @db.DateTime(0)
+  State           Int       @default(1)
+}
+
+model onlineexamsgrades {
+  id                   Int       @id @default(autoincrement())
+  examId               Int?
+  studentId            Int?
+  examQuestionsAnswers String?   @db.Text
+  examGrade            Int?
+  examDate             String?   @db.VarChar(250)
+  EntryBy              Int?
+  EntryDateTime        DateTime? @db.DateTime(0)
+  UpdateBy             Int?
+  UpdatedateTime       DateTime? @db.DateTime(0)
+  DeleteBy             Int?
+  DeleteDateTime       DateTime? @db.DateTime(0)
+  State                Int       @default(1)
+}
+
+model parent {
+  Id               Int       @id @default(autoincrement())
+  FatherName       String?   @db.VarChar(100)
+  FatherMobileNo   String?   @db.VarChar(50)
+  MotherName       String?   @db.VarChar(100)
+  MotherMobileNo   String?   @db.VarChar(50)
+  PermanentAddress String?   @db.VarChar(250)
+  GudrianIncome    String?   @db.VarChar(50)
+  FullName         String?   @db.VarChar(200)
+  Username         String?   @db.VarChar(200)
+  Email            String?   @db.VarChar(150)
+  Password         String?   @db.VarChar(200)
+  Gender           Int?
+  DateOfBirth      DateTime? @db.Date
+  Address          String?   @db.Text
+  PhoneNo          String?   @db.VarChar(150)
+  MobileNo         String?   @db.VarChar(150)
+  Profession       String?   @db.VarChar(150)
+  Photo            String?   @db.VarChar(250)
+  Communication    String?   @db.VarChar(20)
+  Communication1   String?   @db.VarChar(20)
+  Communication2   String?   @db.VarChar(20)
+  StudentDetails   String?   @db.Text
+  EntryBy          Int?
+  EntryDateTime    DateTime? @db.DateTime(0)
+  UpdateBy         Int?
+  UpdateDateTime   DateTime? @db.DateTime(0)
+  DeleteBy         Int?
+  DeleteDateTime   DateTime? @db.DateTime(0)
+  State            Int       @default(1)
+}
+
+model payment {
+  Id             Int       @id @default(autoincrement())
+  ClassId        Int?
+  PayTypeId      Int?
+  Fee            String?   @db.VarChar(50)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdateDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model paymentreceive {
+  Id             Int       @id @default(autoincrement())
+  BatchNo        String    @db.VarChar(100)
+  Date           DateTime  @db.Date
+  PaymentType    Int
+  Smonth         String    @db.VarChar(100)
+  StudentId      Int
+  ClassId        Int
+  SectionId      Int
+  TotalPaid      Float
+  Discount       Float?
+  AmountPaid     Float
+  Type           Int?
+  Monthlypayment Int?      @db.TinyInt
+  Description    String?   @db.Text
+  AcademicYear   String    @db.VarChar(4)
+  VerifyStatus   Int?      @default(0) @db.TinyInt
+  VerifyBy       Int?
+  VerifyDateTime DateTime? @db.Date
+  State          Int?      @default(1) @db.TinyInt
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.Date
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+}
+
+model paymenttype {
+  Id             Int       @id @default(autoincrement())
+  PaymentType    String?   @unique(map: "PaymentType") @db.VarChar(100)
+  Amount         Float?
+  Notes          String?   @db.Text
+  PaymentState   Int?
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdateDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model polls {
+  id             Int       @id @default(autoincrement())
+  pollTitle      String?   @db.VarChar(250)
+  pollOptions    String?   @db.Text
+  pollTarget     String?   @db.VarChar(10)
+  pollStatus     Int?      @default(1)
+  userVoted      String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdatedateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model promotionhistory {
+  Id              Int      @id @default(autoincrement())
+  ExamId          Int
+  ClassId         Int
+  StudentId       Int
+  SectionId       Int?
+  TotalExamMark   Float
+  Examyear        String?  @db.VarChar(10)
+  Position        Int?
+  sectionPosition Int?
+  EntryBy         Int
+  EntryDateTime   DateTime @db.DateTime(0)
+  UpdateBy        Int
+  UpdatedateTime  DateTime @db.DateTime(0)
+  DeleteBy        Int
+  DeleteDateTime  DateTime @db.DateTime(0)
+  State           Int      @default(1)
+
+  @@unique([ExamId, ClassId, StudentId, SectionId, Examyear], map: "NewIndex1")
+}
+
+model section {
+  Id             Int       @id @default(autoincrement())
+  className      Int?
+  Section        String?   @db.VarChar(100)
+  TeacherId      Int?
+  ShiftId        Int?
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdatedateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+
+  @@unique([className, Section], map: "className")
+}
+
+model sender {
+  Id             Int       @id @default(autoincrement())
+  SenderId       String?   @db.VarChar(200)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdatedateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  State          Int?      @default(1)
+}
+
+model sendsms {
+  Id             Int       @id @default(autoincrement())
+  MobileNo       String?   @db.VarChar(200)
+  SmsType        String?   @db.VarChar(50)
+  SmsContent     String?   @db.VarChar(500)
+  ScheduleSms    Int?
+  SenderId       String?   @db.VarChar(50)
+  File           String?   @db.VarChar(500)
+  SmsSendStatus  Int?      @default(0)
+  State          Int?      @default(1) @db.TinyInt
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  CountryId      String?   @db.VarChar(200)
+}
+
+model settings {
+  Id             Int       @id @default(autoincrement())
+  Title          String?   @db.VarChar(250)
+  PrincipalName  String?   @db.VarChar(100)
+  OfficeCell     String?   @db.VarChar(50)
+  PhoneNo        String?   @db.VarChar(50)
+  Email          String?   @db.VarChar(100)
+  Website        String?   @db.VarChar(150)
+  Address        String?   @db.VarChar(250)
+  Logo           String?   @db.VarChar(250)
+  Session        String?   @db.VarChar(20)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdatedateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model shift {
+  Id             Int       @id @default(autoincrement())
+  Shift          String?   @db.VarChar(100)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdatedateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model studenthistory {
+  Id              Int       @id @default(autoincrement())
+  StudentName     String    @db.VarChar(250)
+  ClassId         Int?
+  SectionId       Int?
+  AcademicYear    String?   @db.VarChar(10)
+  Position        Int?
+  RollNo          Int?
+  RegNo           String?   @db.VarChar(50)
+  StudentId       String?   @db.VarChar(100)
+  GroupId         Int?
+  ExamId          Int?
+  ShiftId         Int?
+  UserName        String?   @db.VarChar(100)
+  Email           String?   @db.VarChar(100)
+  Password        String?   @db.VarChar(100)
+  Gender          Int?
+  DateOfBirth     DateTime? @db.Date
+  Address         String?   @db.VarChar(150)
+  PhoneNo         String?   @db.VarChar(50)
+  MobileNo        String?   @db.VarChar(50)
+  Transportation  Int?
+  Hostel          Int?
+  Communication   String?   @db.VarChar(20)
+  Communication1  String?   @db.VarChar(20)
+  Communication2  String?   @db.VarChar(20)
+  BloodGroup      String?   @db.VarChar(20)
+  AcademicHistory String?   @db.Text
+  MedicalHistory  String?   @db.Text
+  Height          String?   @db.VarChar(20)
+  Weight          String?   @db.VarChar(15)
+  Photo           String?   @db.VarChar(150)
+  ParentsId       Int?
+  WaiverName      String?   @db.VarChar(100)
+  WaiverValue     Int?
+  EntryBy         Int?
+  EntryDateTime   DateTime? @db.DateTime(0)
+  UpdateBy        Int?
+  UpdateDateTime  DateTime? @db.DateTime(0)
+  DeleteBy        Int?
+  DeleteDateTime  DateTime? @db.DateTime(0)
+  State           Int?      @default(1) @db.TinyInt
+  ActiveBy        Int?
+  ActiveDateTime  DateTime? @db.DateTime(0)
+  ActiveStatus    Int?      @default(1) @db.TinyInt
+  BlockedBy       Int?
+  BlockedDateTime DateTime? @db.DateTime(0)
+  TotalDue        Float
+
+  @@unique([StudentName, ClassId, SectionId, RollNo], map: "StudentName")
+}
+
+model studentledger {
+  Id             Int       @id @default(autoincrement())
+  StudentId      Int?
+  ClassId        Int?
+  BatchNo        String?   @db.VarChar(50)
+  SectionId      Int?
+  GrandTotal     Float?
+  Discount       Float?
+  Waver          Float?
+  Total          Float?
+  ReceiveAmt     Float?
+  DueAmount      Float?
+  Smonth         String?   @db.VarChar(10)
+  AcademicYear   String?   @db.VarChar(4)
+  VerifyStatus   Int?      @default(0) @db.TinyInt
+  VerifyBy       Int?
+  VerifyDateTime DateTime? @db.DateTime(0)
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.Date
+  DeleteBy       Int
+  DeleteDateTime DateTime  @db.DateTime(0)
+  State          Int?      @default(1) @db.TinyInt
+}
+
+model students {
+  Id              Int       @id @default(autoincrement())
+  StudentName     String    @db.VarChar(250)
+  ClassId         Int?
+  SectionId       Int?
+  AcademicYear    String?   @db.VarChar(10)
+  Position        Int?
+  RollNo          Int?
+  RegNo           String?   @db.VarChar(50)
+  StudentId       String?   @db.VarChar(100)
+  GroupId         Int?
+  ExamId          Int?
+  ShiftId         Int?
+  UserName        String?   @db.VarChar(100)
+  Email           String?   @db.VarChar(100)
+  Password        String?   @db.VarChar(100)
+  Gender          Int?
+  DateOfBirth     DateTime? @db.Date
+  Address         String?   @db.VarChar(150)
+  PhoneNo         String?   @db.VarChar(50)
+  MobileNo        String?   @db.VarChar(50)
+  Transportation  Int?
+  Hostel          Int?
+  Communication   String?   @db.VarChar(20)
+  Communication1  String?   @db.VarChar(20)
+  Communication2  String?   @db.VarChar(20)
+  BloodGroup      String?   @db.VarChar(20)
+  AcademicHistory String?   @db.Text
+  MedicalHistory  String?   @db.Text
+  Height          String?   @db.VarChar(20)
+  Weight          String?   @db.VarChar(15)
+  Photo           String?   @db.VarChar(150)
+  ParentsId       Int?
+  WaiverName      String?   @db.VarChar(100)
+  WaiverValue     Int?      @default(0)
+  TcState         Int?      @default(0)
+  TcDate          DateTime? @db.Date
+  TcReason        String?   @db.Text
+  TcCertificate   String?   @db.VarChar(50)
+  EntryBy         Int?
+  EntryDateTime   DateTime? @db.DateTime(0)
+  UpdateBy        Int?
+  UpdateDateTime  DateTime? @db.DateTime(0)
+  DeleteBy        Int?
+  DeleteDateTime  DateTime? @db.DateTime(0)
+  State           Int?      @default(1) @db.TinyInt
+  ActiveBy        Int?
+  ActiveDateTime  DateTime? @db.DateTime(0)
+  ActiveStatus    Int?      @default(1) @db.TinyInt
+  BlockedBy       Int?
+  BlockedDateTime DateTime? @db.DateTime(0)
+  TotalDue        Float
+
+  @@unique([StudentName, ClassId, SectionId, RollNo], map: "StudentName")
+}
+
+model studentsubject {
+  Id               Int       @id @default(autoincrement())
+  StudentId        Int?
+  SubjectId        Int?
+  ClassId          Int?
+  SectionId        Int?
+  EcademicYear     String?   @db.VarChar(4)
+  AssesmentSubject Int?      @default(0) @db.TinyInt
+  FourSubject      Int?      @default(0) @db.TinyInt
+  EntryBy          Int?
+  EntryDateTime    DateTime? @db.DateTime(0)
+  DeleteBy         Int?
+  DeleteDateTime   DateTime? @db.DateTime(0)
+  UpdateBy         Int?
+  UpdateDateTime   DateTime? @db.DateTime(0)
+  State            Int?      @default(1) @db.TinyInt
+  OrderBy          Int?
+
+  @@unique([StudentId, SubjectId, ClassId, SectionId, EcademicYear], map: "StudentId")
+}
+
+model subjects {
+  Id                  Int       @id @default(autoincrement())
+  ClassId             Int?
+  CourseCode          String?   @db.VarChar(100)
+  CourseTitle         String?   @db.VarChar(250)
+  CourseType          Int?
+  TotalMark           Int?
+  PassMark            Int?
+  ObjectivePassmark   Int?
+  ObjectiveTotalMark  Int?
+  SubjectivePassMark  Int?
+  SubjectiveTotalMark Int?
+  PracticalPassmark   Int?
+  PracticalTotalMark  Int?
+  Notes               String?   @db.Text
+  EntryBy             Int?
+  EntryDateTime       DateTime? @db.DateTime(0)
+  UpdateBy            Int?
+  UpdateDateTime      DateTime? @db.DateTime(0)
+  DeleteBy            Int?
+  DeleteDateTime      DateTime? @db.DateTime(0)
+  State               Int       @default(1)
+
+  @@unique([CourseCode, CourseTitle], map: "CourseCode")
+}
+
+model sysuserright {
+  Id                Int     @id @default(autoincrement())
+  SysUserCatId      Int?
+  OperationId       Int?
+  Name              String? @db.VarChar(200)
+  Url               String? @db.VarChar(200)
+  Title             String? @db.VarChar(200)
+  State             Int?    @default(1) @db.TinyInt
+  Order             Int?
+  Icon              String? @db.VarChar(50)
+  StudentPermission Int?    @default(0) @db.TinyInt
+  TeacherPermission Int?    @default(0) @db.TinyInt
+  ParentPermission  Int?    @default(0) @db.TinyInt
+}
+
+model sysuserrightcat {
+  Id    Int     @id @default(autoincrement())
+  Name  String? @db.VarChar(200)
+  Url   String? @db.VarChar(200)
+  Order Int?
+  State Int?    @default(1) @db.TinyInt
+  Icon  String? @db.VarChar(50)
+}
+
+model teacher {
+  Id             Int       @id @default(autoincrement())
+  TeacherName    String?   @db.VarChar(150)
+  TitleName      Int?
+  Designation    Int?
+  Address        String?   @db.VarChar(250)
+  MobileNo       String?   @db.VarChar(100)
+  DateOfBirth    DateTime? @db.Date
+  Department     Int?
+  EmployeType    Int?
+  EmployeId      String?   @db.VarChar(100)
+  Gender         Int?
+  Photo          String?   @db.VarChar(150)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdatedateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model title {
+  Id             Int       @id @default(autoincrement())
+  TitleName      String?   @db.VarChar(150)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntryDateTime  DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeleteDateTime DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdateDateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model transportation {
+  Id                     Int       @id @default(autoincrement())
+  transportTitle         String?   @db.VarChar(250)
+  transportDescription   String?   @db.Text
+  transportDriverContact String?   @db.Text
+  transportFare          String?   @db.VarChar(250)
+  EntryBy                Int?
+  EntryDateTime          DateTime? @db.DateTime(0)
+  UpdateBy               Int?
+  UpdatedateTime         DateTime? @db.DateTime(0)
+  DeleteBy               Int?
+  DeleteDateTime         DateTime? @db.DateTime(0)
+  State                  Int       @default(1)
+}
+
+model upazila {
+  Id             Int       @id @default(autoincrement())
+  DivisionName   String?   @db.VarChar(250)
+  DistrictName   String?   @db.VarChar(250)
+  UpazilaName    String?   @db.VarChar(250)
+  Notes          String?   @db.Text
+  EntryBy        Int?
+  EntrydateTime  DateTime? @db.DateTime(0)
+  UpdateBy       Int?
+  UpdatedateTime DateTime? @db.DateTime(0)
+  DeleteBy       Int?
+  DeletedateTime DateTime? @db.DateTime(0)
+  State          Int       @default(1)
+}
+
+model userright {
+  Id             Int  @id @default(autoincrement())
+  UserTableId    Int?
+  SysuserRightId Int?
+  State          Int? @default(1) @db.TinyInt
+}
+
+model users {
+  Id               Int       @id @default(autoincrement())
+  UserId           String?   @db.VarChar(50)
+  Password         String?   @db.VarChar(50)
+  Name             String?   @db.VarChar(250)
+  LastName         String?   @db.VarChar(250)
+  DateOfBirth      DateTime? @db.Date
+  UserGroupId      Int?
+  Address          String?   @db.Text
+  CountryId        Int?
+  StateId          Int?
+  Street           String?   @db.VarChar(100)
+  StreetName       String?   @db.VarChar(255)
+  CityId           Int?
+  Cstate           Int?      @default(0) @db.TinyInt
+  Post_Code        String?   @db.VarChar(100)
+  Country          String?   @db.VarChar(100)
+  DivisionName     String?   @db.VarChar(250)
+  DistrictName     String?   @db.VarChar(250)
+  UpazilaName      String?   @db.VarChar(250)
+  BillStreet       String?   @db.VarChar(250)
+  BillStreetName   String?   @db.VarChar(250)
+  BillCountry      String?   @db.VarChar(250)
+  Billstate        Int?
+  BillCity         Int?
+  BillPost_Code    String?   @db.VarChar(250)
+  Phone            String?   @db.VarChar(100)
+  Mobile           Int?
+  Credits          String?   @db.VarChar(150)
+  ExpireDate       DateTime? @db.Date
+  Email            String?   @db.VarChar(100)
+  Remarks          String?   @db.Text
+  BillAddress      String?   @db.VarChar(255)
+  Customer_Tag     String?   @db.VarChar(100)
+  BlockState       Int?      @default(0) @db.TinyInt
+  ApproveState     Int?      @default(0) @db.TinyInt
+  EntryBy          Int?
+  EntryDateTime    DateTime? @db.DateTime(0)
+  UpdateBy         Int?
+  UpdatedateTime   DateTime? @db.DateTime(0)
+  DeleteBy         Int?
+  DeleteDateTime   DateTime? @db.DateTime(0)
+  BlockBy          Int?
+  BlockDateTime    DateTime? @db.DateTime(0)
+  UnBlockBy        Int?
+  UnBlockDateTime  DateTime? @db.DateTime(0)
+  State            Int?      @default(1) @db.TinyInt
+  PaymentMethod    String?   @db.VarChar(100)
+  PassChangeSts    Int?      @default(0) @db.TinyInt
+  Remember_Token   String    @db.VarChar(250)
+  Role             String    @db.VarChar(250)
+  Activated        Int
+  StudentRollId    String    @db.VarChar(250)
+  AuthSession      String    @db.Text
+  Gender           String    @db.VarChar(250)
+  StudentClass     Int
+  ParentProfession String    @db.VarChar(250)
+  ParentOf         String    @db.Text
+  Photo            String    @db.VarChar(250)
+  IsLeaderBoard    String    @db.Text
+  RestoreUniqId    String    @db.VarChar(250)
+  Transport        Int
+  DefLang          Int
+}
